@@ -1,0 +1,11 @@
+FROM python:3.8
+EXPOSE 8080
+WORKDIR /app
+COPY seg_model.hdf5 /app/seg_model.hdf5
+ADD result /app/
+ADD test /app/
+ADD test_resize /app/
+COPY . ./
+RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
+RUN pip install -r requirements.txt
+ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8080", "--server.address=0.0.0.0"]
